@@ -1,0 +1,7 @@
+{
+  "name": "shirin-tortlar-tests",
+  "private": true,
+  "description": "Browser test for the static showcase. Setup once: npm install (in this folder).",
+  "scripts": { "showcase": "node showcase_test.js" },
+  "devDependencies": { "jsdom": "24.1.3" }
+}

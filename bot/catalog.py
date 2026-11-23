@@ -97,6 +97,8 @@ class Shop:
     daily_capacity: int = 0        # max orders per delivery day, 0 = unlimited
     reminder_time: str = "18:00"   # customer reminder, the day before delivery
     summary_time: str = "08:00"    # owner's morning summary
+    brand_color: str = "#ff2d55"   # accent color of the Mini App
+    logo: Path | None = None       # square logo shown in the Mini App
 
 
 @dataclass
@@ -136,6 +138,22 @@ def _int(value, where: str, minimum: int = 0) -> int:
     if isinstance(value, bool) or not isinstance(value, int) or value < minimum:
         raise CatalogError(f"{where}: expected a whole number >= {minimum}, got {value!r}")
     return value
+
+
+def _color(value, where: str) -> str:
+    if not isinstance(value, str) or not HEX_RE.match(value):
+        raise CatalogError(f"{where}: use a color like #ff2d55 (in quotes)")
+    return value.lower()
+
+
+def _file(value, where: str) -> Path | None:
+    if not value:
+        return None
+    path = Path(value) if Path(value).is_absolute() else ROOT / value
+    if not path.is_file():
+        log.warning("%s: %s not found, shown without it", where, path)
+        return None
+    return path
 
 
 def _hhmm(value, where: str) -> str:
@@ -200,6 +218,8 @@ def load_catalog(path: Path) -> Catalog:
             daily_capacity=_int(s.get("daily_capacity", 0), "shop.daily_capacity"),
             reminder_time=_hhmm(s.get("reminder_time", "18:00"), "shop.reminder_time"),
             summary_time=_hhmm(s.get("morning_summary_time", "08:00"), "shop.morning_summary_time"),
+            brand_color=_color((s.get("brand") or {}).get("color", "#ff2d55"), "shop.brand.color"),
+            logo=_file((s.get("brand") or {}).get("logo"), "shop.brand.logo"),
         )
     except KeyError as e:
         raise CatalogError(f"shop: missing field {e}")

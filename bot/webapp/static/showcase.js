@@ -29,6 +29,14 @@
     '<text x="180" y="218" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#888">8600 **** **** 9012</text>' +
     '<text x="180" y="246" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#aaa">DEMO</text></svg>');
 
+  const REVIEWS = [
+    { name: 'Madina', stars: 5, uz: "Juda mazali, mehmonlar hammasi retseptini so'rashdi!", ru: 'Очень вкусно, гости спрашивали рецепт!' },
+    { name: 'Olga', stars: 5, uz: "Bezagi rasmdagidan ham chiroyli chiqdi 😍", ru: 'Украшение даже лучше, чем на фото 😍' },
+    { name: 'Sardor', stars: 5, uz: 'Vaqtida yetkazishdi, rahmat!', ru: 'Привезли вовремя, спасибо!' },
+    { name: 'Nilufar', stars: 4, uz: "Bolalar juda xursand bo'lishdi", ru: 'Дети в восторге' },
+    { name: 'Aziz', stars: 5, uz: "Narxi ham, ta'mi ham zo'r", ru: 'И цена, и вкус отличные' },
+  ];
+  const RATINGS = [4.9, 4.8, 5.0, 4.7, 4.9, 5.0, 4.8];
   let cat = null;  // catalog.json
   let db = null;   // the visitor's data
 
@@ -78,7 +86,7 @@
       slot: cat.shop.slots[slot] || cat.shop.slots[0], method, address: method === 'delivery' ? address : null,
       inscription: p.inscription ? (inscription || '') : null, phone, item, fee, total: item + fee,
       status: 'new', history: { new: hhmm(t0) }, deposit: 0, paid: 0, payment: 'none', courier: null,
-      readyPhoto: null, receiptAt: 0, created: `${day(0)} ${hhmm(t0)}`,
+      readyPhoto: null, receiptAt: 0, created: `${day(0)} ${hhmm(t0)}`, gift: null, rating: null, review: null, inGallery: true,
       customer: { name, username: null, lang: 'uz' },
     };
     db.orders.push(o);
@@ -119,10 +127,11 @@
       names: o.names, date: o.date, slot: o.slot, method: o.method, address: o.address, lat: null, lon: null,
       inscription: o.inscription, total: o.total, item: o.item, fee: o.fee, deposit: o.deposit, paid: o.paid,
       payment: o.payment, courier: o.courier, created: o.created, photo: p ? p.thumb : null, readyPhoto: o.readyPhoto,
+      gift: o.gift || null, rating: o.rating || null, review: o.review || null,
     };
     if (admin) {
       Object.assign(out, { customer: o.customer, phone: o.phone, actions: nextActions(o), mapUrl: null, refPhoto: null,
-                           receipt: o.payment === 'review' ? RECEIPT : null });
+                           receipt: o.payment === 'review' ? RECEIPT : null, inGallery: o.inGallery !== false });
     }
     return out;
   }
@@ -164,13 +173,29 @@
     return out;
   }
 
+  /* "Our works": the visitor's own well-rated delivered orders first, then sample reviews. */
+  function gallery() {
+    const lang = db.lang || 'uz';
+    const own = db.orders.filter(o => o.mine && o.status === 'delivered' && o.readyPhoto && o.inGallery !== false && (!o.rating || o.rating >= 4))
+      .reverse().map(o => ({ photo: o.readyPhoto, stars: o.rating, text: o.review, name: o.customer.name, names: o.names, date: o.date }));
+    const samples = REVIEWS.map((r, i) => {
+      const p = cat.products[(i * 3 + 1) % cat.products.length];
+      const size = p.sizes[Math.min(1, p.sizes.length - 1)];
+      return { photo: p.photo, stars: r.stars, text: r[lang], name: r.name, date: day(-(i * 4 + 2)),
+               names: both(l => ({ product: p.name[l], size: size.name[l], filling: null })) };
+    }).filter(g => g.photo);
+    return own.concat(samples);
+  }
+
   function catalogPayload() {
     return {
       shop: Object.assign({}, cat.shop, { deposit: db.deposit }),
       categories: cat.categories,
-      products: cat.products.map(p => {
+      gallery: gallery(),
+      products: cat.products.map((p, i) => {
         const ds = days(p);
-        return Object.assign({}, p, { soldOut: db.soldOut.includes(p.id), days: ds, dates: ds.filter(x => !x.x).map(x => x.d) });
+        return Object.assign({}, p, { soldOut: db.soldOut.includes(p.id), days: ds, dates: ds.filter(x => !x.x).map(x => x.d),
+                                      rating: { avg: RATINGS[i % RATINGS.length], n: 12 + (i * 7) % 30 } });
       }),
       limits: cat.limits,
     };
@@ -208,9 +233,17 @@
                             method: data.method, address: data.address, phone: data.phone, inscription: data.inscription,
                             name: db.lang === 'ru' ? 'Вы' : 'Siz', mine: true });
       o.customer.lang = db.lang || 'uz';
+      if (data.gift && data.method === 'delivery') o.gift = data.gift;
       return { code: `${cat.shop.prefix}-${o.num}`, num: o.num };
     },
 
+    review: p => {
+      const o = find(p.num);
+      if (o.status !== 'delivered' || !(p.stars >= 1 && p.stars <= 5)) throw err('stale');
+      o.rating = p.stars;
+      o.review = String(p.text || '').trim().slice(0, 500) || null;
+      return { order: json(o) };
+    },
     receipt: p => {
       const o = find(p.num);
       if (o.payment !== 'due') throw err('stale');
@@ -272,6 +305,14 @@
       if (p.soldOut) db.soldOut.push(p.id);
       return { ok: true };
     },
+    'admin/gallery': p => { const o = find(p.num); o.inGallery = !!p.show; return { order: json(o, true) }; },
+    'admin/broadcast': p => {
+      if (!String(p.text || '').trim()) throw err('text');
+      db.broadcasts = db.broadcasts || [];
+      db.broadcasts.unshift({ text: String(p.text).trim(), has_photo: !!p.photo, created_at: `${day(0)} ${hhmm(Date.now())}`, recipients: 128, sent: 128 });
+      return { id: db.broadcasts.length, recipients: 128 };
+    },
+    'admin/broadcasts': () => ({ recipients: 128, items: (db.broadcasts || []).slice(0, 5) }),
     'admin/settings': p => {
       if (Number.isInteger(p.capacity)) db.capacity = Math.max(0, Math.min(99, p.capacity));
       if (Number.isInteger(p.deposit)) db.deposit = Math.max(0, Math.min(100, p.deposit));

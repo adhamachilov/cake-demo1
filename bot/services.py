@@ -42,6 +42,7 @@ class Draft:
     lat: float | None = None
     lon: float | None = None
     phone: str | None = None
+    gift: dict | None = None         # Mini App only: {name, phone, note, surprise}
     prompt_id: int | None = None     # the message asking the current question
     prompt_text: str = ""
     reply_kb: bool = False           # current question uses a reply keyboard (contact/location)
@@ -61,6 +62,7 @@ class Services:
     tunnel: object = None           # Tunnel
     files: object = None            # FileStore: Telegram photos shown in the Mini App
     owner_pending: dict[int, dict] = field(default_factory=dict)  # owner is asked for a cake photo / courier
+    review_pending: dict[int, int] = field(default_factory=dict)  # customer -> order waiting for a comment
     background: list[asyncio.Task] = field(default_factory=list)  # scheduler etc.
     tasks: set[asyncio.Task] = field(default_factory=set)         # Telegram sends running in the background
     chains: dict = field(default_factory=dict)                    # order number -> its latest background task

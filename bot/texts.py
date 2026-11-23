@@ -262,6 +262,19 @@ T: dict[str, dict[str, str]] = {
     "pay_paid": {"uz": "✅ {paid} to'langan, qoldiq {rest}", "ru": "✅ оплачено {paid}, остаток {rest}"},
     "pay_full": {"uz": "✅ to'liq to'langan", "ru": "✅ оплачено полностью"},
 
+    # gifts, reviews, promotions
+    "f_gift": {"uz": "Sovg'a, oluvchi", "ru": "Подарок, получатель"},
+    "f_gift_note": {"uz": "Otkritka", "ru": "Открытка"},
+    "gift_surprise": {"uz": "syurpriz: oldindan qo'ng'iroq qilmang", "ru": "сюрприз: не звонить заранее"},
+    "rate_ask": {"uz": "\n\nTortimiz qanday bo'ldi? Baholang 👇", "ru": "\n\nКак вам торт? Оцените 👇"},
+    "rate_thanks": {"uz": "Rahmat! Bir-ikki so'z bilan fikringizni yozasizmi? Yoki «O'tkazib yuborish»ni bosing.",
+                    "ru": "Спасибо! Напишете пару слов о заказе? Или нажмите «Пропустить»."},
+    "review_saved": {"uz": "💝 Fikringiz uchun rahmat!", "ru": "💝 Спасибо за отзыв!"},
+    "o_review": {"uz": "{stars} <b>#{num}</b> uchun baho\n{text}— {who}", "ru": "{stars} оценка заказа <b>#{num}</b>\n{text}— {who}"},
+    "btn_open_catalog": {"uz": "🍰 Katalogni ochish", "ru": "🍰 Открыть каталог"},
+    "btn_promo_off": {"uz": "🔕 Aksiyalarni o'chirish", "ru": "🔕 Отписаться от акций"},
+    "promo_off_done": {"uz": "Aksiyalar o'chirildi. /start orqali qayta yoqiladi.", "ru": "Вы отписались от акций. /start включит снова."},
+
     # owner, v2
     "o_btn_baking": {"uz": "👩‍🍳 Pishirilmoqda", "ru": "👩‍🍳 Печём"},
     "o_btn_decorating": {"uz": "🎨 Bezatilmoqda", "ru": "🎨 Украшаем"},
@@ -302,6 +315,10 @@ T: dict[str, dict[str, str]] = {
     "cmd_orders": {"uz": "Bugungi buyurtmalar (egasi)", "ru": "Заказы на сегодня (владелец)"},
     "cmd_admin": {"uz": "Boshqaruv paneli (egasi)", "ru": "Панель управления (владелец)"},
 }
+
+
+def stars(n: int) -> str:
+    return "⭐" * max(0, min(5, int(n)))
 
 
 def t(lang: str, key: str, **kw) -> str:

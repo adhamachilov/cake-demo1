@@ -33,7 +33,7 @@ from telegram.ext import (
     filters,
 )
 
-from . import flow, keyboards, ops, owner, scheduler
+from . import flow, keyboards, ops, owner, reviews, scheduler
 from .files import FileStore
 from .services import Services, svc
 from .texts import all_langs, esc, fmt_date, t
@@ -138,6 +138,7 @@ async def my_orders(s: Services, bot: Bot, user_id: int, lang: str) -> None:
 async def cmd_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     s, u = svc(context), update.effective_user
     s.db.touch_user(u.id, u.first_name, u.username)
+    s.db.set_promos(u.id, True)
     await update.message.reply_text(t("uz", "choose_lang", shop=esc(s.catalog.shop.name)),
                                     parse_mode=HTML, reply_markup=keyboards.lang_choice())
 
@@ -227,6 +228,16 @@ async def on_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
         parts = data.split(":", 3)
         if len(parts) == 4:
             return await flow.on_callback(s, bot, q, parts[1], parts[2], parts[3])
+    if data.startswith("rate:"):
+        parts = data.split(":")
+        if len(parts) == 3 and parts[1].isdigit() and parts[2].isdigit():
+            return await reviews.on_rate(s, bot, q, int(parts[1]), int(parts[2]))
+    if data.startswith("rv:skip:") and data[8:].isdigit():
+        return await reviews.on_skip(s, bot, q, int(data[8:]))
+    if data == "promo:off":
+        s.db.set_promos(user.id, False)
+        await q.answer(t(lang, "promo_off_done"), show_alert=True)
+        return
     if data.startswith("own:"):
         parts = data.split(":")
         if len(parts) == 3 and parts[2].isdigit():
@@ -240,6 +251,8 @@ async def on_text(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     s, msg, u = svc(context), update.message, update.effective_user
     lang, text, bot = s.lang_of(u), (update.message.text or "").strip(), context.bot
     if u.id == s.cfg.owner_id and await owner.owner_input(s, bot, msg):  # courier name for an order
+        return
+    if await reviews.on_text(s, bot, msg):  # a comment after rating
         return
     if text in all_langs("btn_catalog"):
         return await send_catalog(s, bot, u.id, lang)

@@ -7,7 +7,7 @@ import re
 from datetime import date
 
 from .services import Services
-from .texts import esc, fmt_date, fmt_phone, money, t
+from .texts import esc, fmt_date, fmt_phone, money, stars, t
 from .widgets import fit_data
 
 LINE = "━━━━━━━━━━━━━━"
@@ -40,6 +40,14 @@ def details(s: Services, o: dict, lang: str, for_owner: bool = False) -> list[st
         out.append(f"🚚 {t(lang, 'f_delivery')}: {where}")
     else:
         out.append(f"🏠 {t(lang, 'f_pickup')}: {esc(s.catalog.shop.pickup_address[lang])}")
+    if o.get("gift"):
+        g = o["gift"]
+        line = f"🎁 {t(lang, 'f_gift')}: {esc(g['name'])}, {esc(fmt_phone(g['phone']))}"
+        if g.get("surprise"):
+            line += f" · {t(lang, 'gift_surprise')}"
+        out.append(line)
+        if g.get("note"):
+            out.append(f"💌 {t(lang, 'f_gift_note')}: «{esc(g['note'])}»")
     out.append(f"📞 {t(lang, 'f_phone')}: {esc(fmt_phone(o['phone']))}")
     out.append("")
     if o["method"] == "delivery":
@@ -61,6 +69,8 @@ def owner_card(s: Services, o: dict) -> str:
     lines.append(f"💳 {t(lang, 'f_payment')}: {payment_line(o, lang)}")
     if o["courier"]:
         lines.append(f"🚚 {t(lang, 'f_courier')}: {esc(courier_label(o, lang))}")
+    if o.get("rating"):
+        lines.append(f"{stars(o['rating'])}" + (f" «{esc(o['review'])}»" if o.get("review") else ""))
     lines.append(LINE)
     lines += details(s, o, lang, for_owner=True)
     lines.append(LINE)

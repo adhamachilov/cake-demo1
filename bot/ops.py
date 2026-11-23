@@ -149,6 +149,10 @@ async def notify_customer(s: Services, bot: Bot, o: dict, photo: str | bytes | N
                         "rejected": "n_rejected"}[status], num=code, phone=esc(shop.phone))
     if status in ("ready", "on_way") and rest > 0:
         text += t(lang, "n_rest", rest=money(rest, lang))
+    if status == "delivered" and o["rating"] is None:
+        from .reviews import rating_buttons
+        text += t(lang, "rate_ask")
+        markup = rating_buttons(o["num"])
 
     reply = ReplyParameters(message_id=o["cust_widget_msg_id"], allow_sending_without_reply=True) \
         if o["cust_widget_msg_id"] else None

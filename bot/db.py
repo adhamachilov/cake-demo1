@@ -54,6 +54,10 @@ CREATE TABLE IF NOT EXISTS orders (
 CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT);      -- owner's changes, scheduler marks
 CREATE TABLE IF NOT EXISTS closed_days (day TEXT PRIMARY KEY);                -- YYYY-MM-DD, no orders
 CREATE TABLE IF NOT EXISTS sold_out (product_id TEXT PRIMARY KEY);            -- hidden from ordering
+CREATE TABLE IF NOT EXISTS broadcasts (                                        -- promotions sent by the owner
+    id INTEGER PRIMARY KEY AUTOINCREMENT, text TEXT NOT NULL, has_photo INTEGER NOT NULL DEFAULT 0,
+    created_at TEXT NOT NULL, recipients INTEGER NOT NULL DEFAULT 0, sent INTEGER NOT NULL DEFAULT 0
+);
 
 CREATE INDEX IF NOT EXISTS orders_created ON orders(created_at);
 CREATE INDEX IF NOT EXISTS orders_due ON orders(delivery_date);
@@ -68,7 +72,7 @@ class DB:
         self.conn.row_factory = sqlite3.Row
         self.conn.execute("PRAGMA journal_mode=WAL")
         self.conn.executescript(SCHEMA)
-        self._add_columns("users", {"phone": "TEXT"})
+        self._add_columns("users", {"phone": "TEXT", "promos": "INTEGER NOT NULL DEFAULT 1"})
         self._add_columns("orders", {
             "payment_status": "TEXT NOT NULL DEFAULT 'none'",  # none | due | review | paid
             "deposit": "INTEGER NOT NULL DEFAULT 0",          # amount asked in advance
@@ -77,6 +81,10 @@ class DB:
             "ready_photo_id": "TEXT",                         # photo of the finished cake
             "courier": "TEXT",
             "reminded": "INTEGER NOT NULL DEFAULT 0",
+            "gift": "TEXT",                                   # JSON: recipient name/phone, card note, surprise
+            "rating": "INTEGER",                              # 1-5 stars after delivery
+            "review": "TEXT",
+            "in_gallery": "INTEGER NOT NULL DEFAULT 1",       # finished-cake photo shown in "Our works"
         })
         self.conn.commit()
 
@@ -116,6 +124,39 @@ class DB:
         else:
             self.conn.execute("DELETE FROM sold_out WHERE product_id=?", (product_id,))
         self.conn.commit()
+
+    # ---------- promotions ----------
+    def set_promos(self, user_id: int, on: bool) -> None:
+        self.conn.execute("UPDATE users SET promos=? WHERE user_id=?", (1 if on else 0, user_id))
+        self.conn.commit()
+
+    def promo_recipients(self) -> list[int]:
+        return [r["user_id"] for r in self.conn.execute("SELECT user_id FROM users WHERE promos=1 ORDER BY user_id")]
+
+    def add_broadcast(self, text: str, has_photo: bool, created_at: str, recipients: int) -> int:
+        cur = self.conn.execute("INSERT INTO broadcasts(text, has_photo, created_at, recipients) VALUES (?, ?, ?, ?)",
+                                (text, int(has_photo), created_at, recipients))
+        self.conn.commit()
+        return cur.lastrowid
+
+    def finish_broadcast(self, bid: int, sent: int) -> None:
+        self.conn.execute("UPDATE broadcasts SET sent=? WHERE id=?", (sent, bid))
+        self.conn.commit()
+
+    def broadcasts(self, limit: int = 5) -> list[dict]:
+        return [dict(r) for r in self.conn.execute("SELECT * FROM broadcasts ORDER BY id DESC LIMIT ?", (limit,))]
+
+    # ---------- reviews and gallery ----------
+    def gallery(self, limit: int = 12) -> list[dict]:
+        rows = self.conn.execute(
+            "SELECT * FROM orders WHERE status='delivered' AND ready_photo_id IS NOT NULL AND in_gallery=1 "
+            "AND (rating IS NULL OR rating >= 4) ORDER BY id DESC LIMIT ?", (limit,)).fetchall()
+        return [_order(r) for r in rows]
+
+    def product_ratings(self) -> dict[str, tuple[float, int]]:
+        rows = self.conn.execute("SELECT product_id, AVG(rating) AS a, COUNT(*) AS n FROM orders "
+                                 "WHERE rating IS NOT NULL GROUP BY product_id")
+        return {r["product_id"]: (round(r["a"], 1), r["n"]) for r in rows}
 
     def booked_per_day(self, first: str, last: str) -> dict[str, int]:
         rows = self.conn.execute(
@@ -169,6 +210,8 @@ class DB:
     def create_order(self, fields: dict) -> dict:
         fields = dict(fields)
         fields["names"] = json.dumps(fields["names"], ensure_ascii=False)
+        if fields.get("gift") is not None:
+            fields["gift"] = json.dumps(fields["gift"], ensure_ascii=False)
         fields["history"] = json.dumps(fields.get("history", {}))
         cols = ", ".join(fields)
         marks = ", ".join("?" for _ in fields)
@@ -231,4 +274,5 @@ def _order(row: sqlite3.Row) -> dict:
     d = dict(row)
     d["names"] = json.loads(d["names"])
     d["history"] = json.loads(d["history"] or "{}")
+    d["gift"] = json.loads(d["gift"]) if d.get("gift") else None
     return d

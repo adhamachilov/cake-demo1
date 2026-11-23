@@ -105,6 +105,8 @@ async def main() -> None:
         await test_assets(web)
         num = await test_app_order(s, web)
         await test_owner_actions(s, web, num)
+        await test_reviews_gallery(s, web, num)
+        await test_promotions(s, web)
         await test_chat_flow(s)
     finally:
         await web.aclose()
@@ -146,7 +148,8 @@ async def test_app_order(s: Services, web: httpx.AsyncClient) -> int:
     rv = next(p for p in boot["products"] if p["id"] == "red_velvet")
     order = {"product": "red_velvet", "size": "w2", "filling": "mango", "inscription": "Tabriklaymiz!",
              "date": rv["dates"][0], "slot": 1, "method": "delivery", "address": "Chilonzor 9, 12-uy",
-             "lat": None, "lon": None, "phone": "+998901234567"}
+             "lat": None, "lon": None, "phone": "+998901234567",
+             "gift": {"name": "Madina", "phone": "90 765 43 21", "note": "Tug'ilgan kuning bilan!", "surprise": True}}
     since = len(fake.calls)
     t0 = time.perf_counter()
     r = await web.post("/api/order", data={"initData": CUSTOMER, "order": json.dumps(order)},
@@ -159,6 +162,8 @@ async def test_app_order(s: Services, web: httpx.AsyncClient) -> int:
     card = await wait("sendPhoto", since, lambda p: p["chat_id"] == str(OWNER))
     assert r.json()["code"] in conf["text"] and "Qizil baxmal" in card["caption"] and card["photo"].startswith("<upload")
     ok("then the customer's confirmation and the owner's card with the photo arrive in the background")
+    assert "🎁" in card["caption"] and "Madina" in card["caption"] and "syurpriz" in card["caption"] and "Tug'ilgan" in card["caption"]
+    ok("gift order: the owner's card shows recipient, phone, card text and 'surprise'")
     return r.json()["num"]
 
 
@@ -202,6 +207,56 @@ async def test_owner_actions(s: Services, web: httpx.AsyncClient, num: int) -> N
     forged = detail["receipt"].replace("s=", "s=0")
     assert (await web.get("/" + forged)).status_code == 404
     ok(f"receipt, cake and reference photos load on demand ({(time.perf_counter() - t0) * 1000:.0f} ms); forged links refused")
+
+
+async def test_reviews_gallery(s: Services, web: httpx.AsyncClient, num: int) -> None:
+    print("\nDelivery, rating, gallery")
+    since = len(fake.calls)
+    for action in ("way", "dlv"):
+        r = await web.post("/api/admin/action", json={"initData": OWNER_INIT, "num": num, "action": action, "courier": "Jasur"})
+        assert r.status_code == 200, r.text
+    done = await wait("sendMessage", since, lambda p: p["chat_id"] == str(CUST) and "topshirildi" in p["text"])
+    assert f"rate:{num}:5" in done["reply_markup"]
+    ok("'delivered' message asks for 1-5 stars")
+    since = len(fake.calls)
+    fake.push(callback(CUST, f"rate:{num}:5", fake.next_msg))
+    await wait("sendMessage", since, lambda p: p["chat_id"] == str(CUST) and "⭐⭐⭐⭐⭐" in p["text"])
+    since = len(fake.calls)
+    fake.push(chat_msg(CUST, text="Juda mazali edi, rahmat!"))
+    note = await wait("sendMessage", since, lambda p: p["chat_id"] == str(OWNER) and "⭐⭐⭐⭐⭐" in p["text"])
+    assert "Juda mazali" in note["text"]
+    ok("customer taps 5 ⭐ and writes a comment; the owner gets the review")
+    boot = (await web.post("/api/bootstrap", json={"initData": CUSTOMER})).json()
+    g = boot["gallery"]
+    rv = next(p for p in boot["products"] if p["id"] == "red_velvet")
+    assert len(g) == 1 and g[0]["stars"] == 5 and g[0]["text"].startswith("Juda") and g[0]["photo"].startswith("f/")
+    assert rv["rating"] == {"avg": 5.0, "n": 1}
+    assert boot["shop"]["color"] == "#ff2d55" and (await web.get("/" + boot["shop"]["logo"])).status_code == 200
+    ok("the finished cake appears in 'Our works' with the review; the cake shows ★ 5.0; brand color and logo served")
+    await web.post("/api/admin/gallery", json={"initData": OWNER_INIT, "num": num, "show": False})
+    assert (await web.post("/api/bootstrap", json={"initData": CUSTOMER})).json()["gallery"] == []
+    ok("the owner can hide it from the gallery")
+
+
+async def test_promotions(s: Services, web: httpx.AsyncClient) -> None:
+    print("\nPromotions")
+    info = (await web.post("/api/admin/broadcasts", json={"initData": OWNER_INIT})).json()
+    since = len(fake.calls)
+    r = await web.post("/api/admin/broadcast", data={"initData": OWNER_INIT, "text": "🎄 Yangi yil setlari: 10% chegirma!"},
+                       files={"photo": ("promo.jpg", jpeg(), "image/jpeg")})
+    assert r.status_code == 200 and r.json()["recipients"] == info["recipients"] >= 2, r.text
+    sent = [await wait("sendPhoto", since, lambda p, u=u: p["chat_id"] == str(u) and "chegirma" in p.get("caption", ""))
+            for u in s.db.promo_recipients()]
+    assert all("promo:off" in p["reply_markup"] for p in sent)
+    assert sent[0]["photo"].startswith("<upload") and not sent[-1]["photo"].startswith("<upload")
+    ok(f"promotion with photo sent to all {len(sent)} customers (photo uploaded once, then reused)")
+    fake.push(callback(CUST, "promo:off"))
+    for _ in range(40):
+        if CUST not in s.db.promo_recipients():
+            break
+        await asyncio.sleep(0.1)
+    assert CUST not in s.db.promo_recipients()
+    ok("'unsubscribe' removes the customer from future promotions")
 
 
 async def test_chat_flow(s: Services) -> None:

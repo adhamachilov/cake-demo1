@@ -9,6 +9,10 @@ and time → delivery or pickup → review → order. Then they follow the order
 *accepted → baking → decorating → ready (with a photo of their cake) → on the way (courier) →
 delivered*, and pay the deposit by card transfer with a receipt screenshot.
 
+**Also:** the bakery's own logo and color, **gift orders** (recipient, card text, "surprise"),
+**ratings and reviews** after delivery with an **"Our works" gallery** of finished cakes, and
+**promotions** the owner sends to all customers, with an unsubscribe button.
+
 **For the owner** (chat buttons and a dashboard Mini App): each order arrives as one complete
 card with stage buttons. There's a receipt check, a dashboard (today / tomorrow / 7 days with
 revenue), a calendar with days off, sold-out switches, a daily order limit, a morning summary,
@@ -156,7 +160,7 @@ python -m bot ── long polling (bot) + aiohttp (Mini App + API) + scheduler, 
    `data/bakery.db` in the copy.
 2. In @BotFather, create the client's bot (`/setuserpic`, `/setdescription`). Put its token and
    the client's user ID in `.env`.
-3. Edit **`catalog.yaml`**: the `shop` block (name, tagline, phone, pickup address, delivery fee,
+3. Edit **`catalog.yaml`**: the `shop` block (name, tagline, **brand color and logo**, phone, pickup address, delivery fee,
    **card number and deposit %**, daily limit, reminder and summary times, time slots),
    categories, products, prices. Mark one product `featured: true` for the banner.
 4. Replace `images/` with the client's photos (same names, or change `photo:`). JPG or PNG,
@@ -217,7 +221,13 @@ The live bot (`python -m bot`) is still the way to show real notifications and o
 .venv/bin/python tests/run_tests.py
 ```
 
-These run the real bot and Mini App server against a fake Telegram (`tests/fake_telegram.py`)
+And the browser test of the Netlify showcase (needs Node.js; `npm install` once in `tests/`):
+
+```bash
+.venv/bin/python tools/build_showcase.py && (cd tests && node showcase_test.js)
+```
+
+The Python tests run the real bot and Mini App server against a fake Telegram (`tests/fake_telegram.py`)
 that answers every call 0.3 s late. They check the order flow, owner actions, payments, photos
 and speed. Nothing is sent to the real Telegram, and `.env` isn't used. Run them after changing
 the code for a client.

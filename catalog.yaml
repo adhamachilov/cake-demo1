@@ -32,6 +32,9 @@ shop:
   free_delivery_from: 600000      # orders from this total get free delivery (0 = never)
   min_lead_days: 1                # earliest delivery date = today + this many days
   booking_days: 8                 # how many dates the customer can choose from
+  brand:                          # the Mini App takes the bakery's look from here
+    color: "#ff2d55"              # accent color (buttons, prices, highlights)
+    logo: images/logo.png         # square image, at least 256×256
   payment:                        # deposit by card transfer; the customer sends a receipt screenshot
     card_number: "8600 1234 5678 9012"   # DEMO number: put the bakery's Uzcard/Humo card here
     card_holder: "Dilnoza K."

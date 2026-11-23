@@ -135,6 +135,7 @@ def order_fields(s: Services, d: Draft, user_id: int) -> dict:
         "lat": d.lat if d.method == "delivery" else None,
         "lon": d.lon if d.method == "delivery" else None,
         "phone": d.phone,
+        "gift": d.gift if d.method == "delivery" else None,
         "item_price": price,
         "delivery_fee": fee,
         "total": price + fee,

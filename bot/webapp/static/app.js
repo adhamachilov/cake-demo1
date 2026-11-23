@@ -81,6 +81,17 @@
       showcaseNote: "Namoyish: buyurtmalar haqiqiy emas, qandolatxona avtomatik javob beradi",
       showcaseDone: "Bu namoyish: buyurtmangiz holati bir necha daqiqada o'zi o'zgaradi. «Buyurtmalarim»da kuzating!",
       ownerCta: "👩‍🍳 Siz qandolatchimisiz? Egasi panelini ko'ring", ownerCtaSub: "Buyurtmalar, to'lovlar, kalendar",
+      works: 'Bizning ishlarimiz', ratings: '{0} ta baho', gift: "Sovg'a", giftSend: "Sovg'a sifatida yuborish",
+      giftSub: "Boshqa odamga, otkritka bilan", giftName: 'Oluvchining ismi', giftPhone: 'Oluvchining telefoni',
+      giftNote: 'Otkritkaga yozuv (ixtiyoriy)', surprise: 'Syurpriz', surpriseSub: "Oluvchiga oldindan qo'ng'iroq qilmaymiz",
+      needGift: "Oluvchining ismi va telefonini yozing", giftTo: "Sovg'a: {0}", err_gift: "Oluvchining ismi va telefonini tekshiring",
+      rateT: 'Buyurtmani baholang', rateText: 'Fikringiz (ixtiyoriy)', rateSend: 'Baho berish', rateThanks: 'Rahmat! 💝',
+      yourRating: 'Sizning bahoyingiz', inGallery: "«Bizning ishlarimiz»da ko'rsatish", inGalleryFoot: "Tayyor tort rasmi va baho ilova ichidagi galereyada ko'rinadi.",
+      promo: 'Aksiyalar', promoT: 'Aksiya yuborish', promoTo: '{0} ta mijozga yuboriladi',
+      promoPh: "Masalan: 🎄 Yangi yil setlariga buyurtmalar ochildi! 25-dekabrgacha 10% chegirma.",
+      promoFoot: "Har bir xabar ostida «Katalogni ochish» tugmasi va obunani o'chirish imkoniyati bo'ladi.",
+      promoQ: '{0} ta mijozga yuborilsinmi?', promoSent: '{0} ta mijozga yuborilmoqda', promoPast: 'Yuborilganlar',
+      promoNone: "Hali aksiya yuborilmagan", needText: 'Xabar matnini yozing',
       wd: ['Yakshanba', 'Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba'],
       wdS: ['Ya', 'Du', 'Se', 'Cho', 'Pa', 'Ju', 'Sha'],
       mon: ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun', 'iyul', 'avgust', 'sentyabr', 'oktyabr', 'noyabr', 'dekabr'],
@@ -147,6 +158,17 @@
       showcaseNote: 'Демо: заказы не настоящие, кондитерская отвечает автоматически',
       showcaseDone: 'Это демо: статус заказа сам изменится за пару минут. Следите в «Мои заказы»!',
       ownerCta: '👩‍🍳 Вы кондитер? Посмотрите панель владельца', ownerCtaSub: 'Заказы, оплаты, календарь',
+      works: 'Наши работы', ratings: '{0} оценок', gift: 'Подарок', giftSend: 'Отправить как подарок',
+      giftSub: 'Другому человеку, с открыткой', giftName: 'Имя получателя', giftPhone: 'Телефон получателя',
+      giftNote: 'Текст открытки (необязательно)', surprise: 'Сюрприз', surpriseSub: 'Не звоним получателю заранее',
+      needGift: 'Укажите имя и телефон получателя', giftTo: 'Подарок: {0}', err_gift: 'Проверьте имя и телефон получателя',
+      rateT: 'Оцените заказ', rateText: 'Ваш отзыв (необязательно)', rateSend: 'Оценить', rateThanks: 'Спасибо! 💝',
+      yourRating: 'Ваша оценка', inGallery: 'Показывать в «Наших работах»', inGalleryFoot: 'Фото готового торта и оценка видны в галерее приложения.',
+      promo: 'Акции', promoT: 'Отправить акцию', promoTo: 'Получат {0} клиентов',
+      promoPh: 'Например: 🎄 Открыт приём заказов на новогодние сеты! До 25 декабря скидка 10%.',
+      promoFoot: 'Под каждым сообщением будет кнопка «Открыть каталог» и возможность отписаться.',
+      promoQ: 'Отправить {0} клиентам?', promoSent: 'Отправляем {0} клиентам', promoPast: 'Отправленные',
+      promoNone: 'Акций ещё не было', needText: 'Напишите текст сообщения',
       wd: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
       wdS: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
       mon: ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'],
@@ -178,6 +200,7 @@
     receiptSm: svg(17, '<path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/>', 'fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"'),
     x: svg(11, '<path d="M6 6l12 12M18 6 6 18"/>', 'fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"'),
     receipt: svg(30, '<path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/>', 'fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"'),
+    megaphone: svg(17, '<path d="M3.5 10v4h3l7 4.5v-13l-7 4.5z"/><path d="M17 8.5a5 5 0 0 1 0 7"/>', 'fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"'),
     tg: svg(30, '<path d="M21.4 4.6 2.9 11.7c-1.3.5-1.3 1.2-.2 1.5l4.7 1.5 1.8 5.6c.2.6.1.9.8.9.5 0 .7-.2 1-.5l2.3-2.2 4.7 3.5c.9.5 1.5.2 1.7-.8l3.1-14.6c.3-1.3-.5-1.8-1.4-1.5z"/>', 'fill="currentColor"'),
   };
   const STATUS_EMOJI = { new: '📝', accepted: '✅', baking: '👩‍🍳', decorating: '🎨', ready: '🎂', on_way: '🚚', delivered: '💝', rejected: '😔' };
@@ -187,7 +210,7 @@
   const state = {
     lang: 'uz', data: null, active: 0, cat: 'all', pages: [], sending: false, demoOrders: [],
     order: null,  // { p, size, filling, inscription, photo, photoUrl }
-    co: { date: null, slot: null, method: 'delivery', address: '', lat: null, lon: null, phone: '' },
+    co: { date: null, slot: null, method: 'delivery', address: '', lat: null, lon: null, phone: '', gift: null },
     range: 'today', calMonth: null,
   };
 
@@ -343,6 +366,14 @@
 
   // ------------------------------------------------------------------ Telegram chrome
 
+  /* The bakery's own color (catalog.yaml: shop.brand.color). */
+  function applyBrand(color) {
+    if (!/^#[0-9a-f]{6}$/i.test(color || '')) return;
+    document.documentElement.style.setProperty('--accent', color);
+    document.documentElement.style.setProperty('--accent-soft', color + '1f');
+  }
+  const starsHtml = n => `<span class="stars">${'★'.repeat(n)}<i>${'★'.repeat(5 - n)}</i></span>`;
+
   function applyTheme() {
     const dark = tg && tg.colorScheme ? tg.colorScheme === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
     document.documentElement.dataset.theme = dark ? 'dark' : 'light';
@@ -472,6 +503,7 @@
     page.innerHTML = `
       <div class="hero">
         <div>
+          ${d.shop.logo ? `<img class="logo" src="${esc(d.shop.logo)}" alt="">` : ''}
           <div class="eyebrow">${esc(fmtToday())}</div>
           <h1 class="large-title">${esc(d.shop.name)}</h1>
           ${loc(d.shop.tagline) ? `<p class="tagline">${esc(loc(d.shop.tagline))}</p>` : ''}
@@ -491,6 +523,12 @@
             <div class="featured-row"><span class="featured-price">${esc(loc(featured.price))}</span><span class="pill-light">${esc(t('order'))}</span></div>
           </div>
         </button>` : ''}
+      ${(d.gallery || []).length ? `
+        <h2 class="section-title">${esc(t('works'))}</h2>
+        <div class="gallery">${d.gallery.map((g, i) => `
+          <button class="g-item" data-g="${i}"><div class="g-ph"><img loading="lazy" src="${esc(g.photo)}" alt=""></div>
+            <div class="g-cap">${g.stars ? starsHtml(g.stars) : ''}<span>${esc(g.name)}</span></div></button>`).join('')}
+        </div>` : ''}
       ${LOCAL ? `<button class="owner-cta" data-act="dash"><span><b>${esc(t('ownerCta'))}</b><small>${esc(t('ownerCtaSub'))}</small></span>${ICON.chev}</button>` : ''}
       <div class="chips-bar"><div class="chips">
         ${chips.map(c => `<button class="chip${c.id === state.cat ? ' on' : ''}" data-cat="${esc(c.id)}">${esc(c.label)}</button>`).join('')}
@@ -500,8 +538,9 @@
     sharpen(page);
 
     page.addEventListener('click', e => {
-      const el = e.target.closest('[data-product],[data-cat],[data-act]');
+      const el = e.target.closest('[data-product],[data-cat],[data-act],[data-g]');
       if (!el) return;
+      if (el.dataset.g) { hap('light'); const g = state.data.gallery[Number(el.dataset.g)]; push(pg => renderWork(pg, g)); return; }
       if (el.dataset.product) { hap('light'); openProduct(el.dataset.product); }
       else if (el.dataset.cat) {
         if (state.cat === el.dataset.cat) return;
@@ -532,6 +571,7 @@
         <div class="ph${p.thumb ? '' : ' img-done'}" style="background-color:${esc(p.color)}33">
           ${p.thumb ? `<img loading="lazy" decoding="async" src="${esc(p.thumb)}" alt="">` : `<span class="emoji">${esc(p.emoji)}</span>`}
           ${p.soldOut ? `<span class="sold-badge">${esc(t('soldOut'))}</span>` : ''}
+          ${p.rating ? `<span class="rate-badge">★ ${p.rating.avg}</span>` : ''}
         </div>
         <div class="cb">
           <div class="cn">${esc(loc(p.name))}</div>
@@ -539,6 +579,16 @@
           <div class="cf"><span class="cp">${esc(loc(p.price))}</span><span class="plus">${ICON.plus}</span></div>
         </div>
       </button>`).join('');
+  }
+
+  function renderWork(page, g) {
+    const names = g.names[state.lang] || g.names.uz;
+    page.innerHTML = `
+      <div class="ready-photo work-photo"><img src="${esc(g.photo)}" alt=""></div>
+      <div class="section"><div class="group"><div class="row"><span class="rl"><b>${esc(names.product)}</b><small>${esc(names.size)}${names.filling ? ' · ' + esc(names.filling) : ''}</small></span></div>
+        ${g.stars ? `<div class="row"><span class="rl">${starsHtml(g.stars)}${g.text ? `<div class="work-text">«${esc(g.text)}»</div>` : ''}<small>— ${esc(g.name)}, ${esc(fmtDate(g.date, false))}</small></span></div>` : ''}
+      </div></div>`;
+    page.onShow = () => mainButton(null);
   }
 
   async function switchLang() {
@@ -576,6 +626,7 @@
       <div class="pp-hero${p.photo ? '' : ' img-done'}" style="background-color:${esc(p.color)}33">${p.photo ? `<img src="${esc(p.thumb)}" data-full="${esc(p.photo)}" alt="">` : ''}</div>
       <div class="pp-head">
         <h2 class="pp-name">${esc(loc(p.name))}</h2>
+        ${p.rating ? `<div class="pp-rating">${starsHtml(Math.round(p.rating.avg))} <b>${p.rating.avg}</b> · ${esc(t('ratings', p.rating.n))}</div>` : ''}
         <p class="pp-desc">${esc(loc(p.desc))}</p>
         <div class="pp-price" id="price"></div>
       </div>
@@ -756,7 +807,22 @@
               </button>`) : ''}
           </div>
           <div class="sf">${esc(foot)}</div>
+        </div>
+        <div class="section" id="sec-gift">
+          <div class="sh">🎁 ${esc(t('gift'))}</div>
+          <div class="group">
+            <div class="row"><span class="rl">${esc(t('giftSend'))}<small>${esc(t('giftSub'))}</small></span>${switchHtml(!!co.gift, 'data-act="gift"')}</div>
+            ${co.gift ? `
+            <label class="row field"><input id="g-name" maxlength="60" placeholder="${esc(t('giftName'))}" value="${esc(co.gift.name)}"></label>
+            <label class="row field"><input id="g-phone" type="tel" inputmode="tel" placeholder="${esc(t('giftPhone'))}" value="${esc(co.gift.phone)}"></label>
+            <label class="row field"><textarea id="g-note" rows="2" maxlength="150" placeholder="${esc(t('giftNote'))}">${esc(co.gift.note)}</textarea></label>
+            <div class="row"><span class="rl">${esc(t('surprise'))}<small>${esc(t('surpriseSub'))}</small></span>${switchHtml(co.gift.surprise, 'data-act="surprise"')}</div>` : ''}
+          </div>
         </div>`;
+      ['name', 'phone', 'note'].forEach(k => {
+        const el = w.querySelector('#g-' + k);
+        if (el) el.addEventListener('input', () => { co.gift[k] = el.value; });
+      });
       const addr = w.querySelector('#addr');
       addr.addEventListener('input', () => { co.address = addr.value; });
     };
@@ -795,6 +861,10 @@
         });
       } else if (el.dataset.act === 'unlocate') {
         co.lat = co.lon = null; hap('light'); renderWhere();
+      } else if (el.dataset.act === 'gift') {
+        co.gift = co.gift ? null : { name: '', phone: '', note: '', surprise: false }; hap('select'); renderWhere();
+      } else if (el.dataset.act === 'surprise') {
+        co.gift.surprise = !co.gift.surprise; hap('select'); el.classList.toggle('on', co.gift.surprise);
       } else if (el.dataset.act === 'contact') {
         shareContact(phone);
       }
@@ -805,6 +875,9 @@
       if (co.slot == null) { hap('error'); toast(t('needSlot')); return shake(page.querySelector('#sec-slot')); }
       if (co.method === 'delivery' && co.address.trim().length < 5 && co.lat == null) {
         hap('error'); toast(t('needAddress')); return shake(page.querySelector('#sec-address'));
+      }
+      if (co.method === 'delivery' && co.gift && (co.gift.name.trim().length < 2 || !normPhone(co.gift.phone))) {
+        hap('error'); toast(t('needGift')); return shake(page.querySelector('#sec-gift'));
       }
       if (!normPhone(co.phone)) { hap('error'); toast(t('needPhone')); return shake(page.querySelector('#sec-phone')); }
       if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
@@ -857,6 +930,7 @@
           ${p.photoRef ? `<div class="row"><span class="rl">${esc(t('refPhoto'))}</span>${o.photoUrl ? `<img class="thumb" src="${o.photoUrl}" alt="">` : `<span class="rv">${esc(t('none'))}</span>`}</div>` : ''}
           <div class="row"><span class="rl">${esc(t('when'))}</span><span class="rv">${esc(fmtDate(co.date))} · ${esc(shop.slots[co.slot])}</span></div>
           <div class="row"><span class="rl">${esc(co.method === 'pickup' ? t('pickup') : t('delivery'))}<small style="white-space:pre-line">${esc(where)}</small></span></div>
+          ${co.method === 'delivery' && co.gift ? `<div class="row"><span class="rl">🎁 ${esc(t('giftTo', co.gift.name.trim()))}<small>${esc(fmtPhone(normPhone(co.gift.phone)))}${co.gift.surprise ? ' · ' + esc(t('surprise')) : ''}${co.gift.note.trim() ? ' · «' + esc(co.gift.note.trim()) + '»' : ''}</small></span></div>` : ''}
           <div class="row"><span class="rl">${esc(t('phone'))}</span><span class="rv">${esc(fmtPhone(normPhone(co.phone)))}</span></div>
         </div>
       </div>
@@ -882,11 +956,13 @@
       date: co.date, slot: co.slot, method: co.method,
       address: co.method === 'delivery' ? co.address.trim() : '', lat: co.method === 'delivery' ? co.lat : null,
       lon: co.method === 'delivery' ? co.lon : null, phone: normPhone(co.phone),
+      gift: co.method === 'delivery' && co.gift ? { name: co.gift.name.trim(), phone: normPhone(co.gift.phone), note: co.gift.note.trim(), surprise: co.gift.surprise } : null,
     };
     try {
       const j = await apiForm(DEMO ? 'demo/order' : 'order', { order: JSON.stringify(order), photo: o.photo });
       hap('success');
       state.active += 1;
+      state.co.gift = null;
       state.data.phone = order.phone;
       if (DEMO) {
         const now = new Date();
@@ -1015,7 +1091,7 @@
   }
 
   function renderMyOrder(page, order) {
-    let o = order;
+    let o = order, picked = 0;
     const shop = state.data.shop;
     const paint = () => {
       const names = namesOf(o);
@@ -1055,17 +1131,39 @@
         ${pay}
         ${o.status === 'rejected' ? `<div class="section"><div class="sf">${esc(t('rejectedNote', shop.phone))}</div></div>` : `
         <div class="section"><div class="group tl-group">${timeline(o)}</div></div>`}
+        ${o.status === 'delivered' && !o.rating ? `
+        <div class="section" id="sec-rate"><div class="sh">${esc(t('rateT'))}</div><div class="rate-card">
+          <div class="star-row">${[1, 2, 3, 4, 5].map(k => `<button class="star${k <= picked ? ' on' : ''}" data-star="${k}">★</button>`).join('')}</div>
+          <textarea id="rv-text" rows="2" maxlength="500" placeholder="${esc(t('rateText'))}"></textarea>
+          <button class="action-btn" data-act="rate"${picked ? '' : ' disabled'}>${esc(t('rateSend'))}</button>
+        </div></div>` : ''}
+        ${o.rating ? `<div class="section"><div class="group"><div class="row"><span class="rl">${esc(t('yourRating'))}${o.review ? `<small>«${esc(o.review)}»</small>` : ''}</span>${starsHtml(o.rating)}</div></div></div>` : ''}
         <div class="section"><div class="sh">${esc(t('details'))}</div><div class="group">
           <div class="row">${o.photo ? `<img class="thumb" src="${esc(o.photo)}" alt="">` : ''}<span class="rl"><b>${esc(names.product)}</b><small>${esc(names.size)}${names.filling ? ' · ' + esc(names.filling) : ''}</small></span></div>
           <div class="row"><span class="rl">${esc(t('when'))}</span><span class="rv">${esc(fmtDate(o.date))} · ${esc(o.slot)}</span></div>
           <div class="row"><span class="rl">${esc(o.method === 'pickup' ? t('pickup') : t('delivery'))}<small>${esc(o.method === 'pickup' ? loc(shop.pickup) : (o.address || t('locationAdded')))}</small></span></div>
+          ${o.gift ? `<div class="row"><span class="rl">🎁 ${esc(t('giftTo', o.gift.name))}<small>${esc(fmtPhone(o.gift.phone))}${o.gift.surprise ? ' · ' + esc(t('surprise')) : ''}${o.gift.note ? ' · «' + esc(o.gift.note) + '»' : ''}</small></span></div>` : ''}
           <div class="row total-row"><span class="rl">${esc(t('total'))}</span><span class="rv">${money(o.total)}</span></div>
         </div></div>`;
     };
     paint();
     page.addEventListener('click', async e => {
-      const el = e.target.closest('[data-act]');
+      const el = e.target.closest('[data-act],[data-star]');
       if (!el) return;
+      if (el.dataset.star) {
+        picked = Number(el.dataset.star); hap('select');
+        page.querySelectorAll('.star').forEach(b => b.classList.toggle('on', Number(b.dataset.star) <= picked));
+        page.querySelector('[data-act="rate"]').disabled = false;
+        return;
+      }
+      if (el.dataset.act === 'rate') {
+        el.disabled = true;
+        try {
+          const r = await api('review', { num: o.num, stars: picked, text: page.querySelector('#rv-text').value });
+          o = r.order; hap('success'); toast(t('rateThanks')); paint();
+        } catch (err) { hap('error'); toast(errText(err.code)); el.disabled = false; }
+        return;
+      }
       if (el.dataset.act === 'copy') copyText(String(shop.card).replace(/\D/g, ''));
       else if (el.dataset.act === 'receipt') {
         const photo = await pickPhoto();
@@ -1116,7 +1214,7 @@
             : data.orders.length ? data.orders.map(adminRow).join('') : `<div class="row"><span class="rl" style="color:var(--label-2)">${esc(t('noOrders'))}</span></div>`}</div>
         </div>
         <div class="section"><div class="group">
-          ${[['calendar', ICON.cal, 'var(--red)'], ['products', ICON.cake, 'var(--accent)'], ['settings', ICON.gear, '#8e8e93']].map(([k, icon, color]) => `
+          ${[['promo', ICON.megaphone, 'var(--orange)'], ['calendar', ICON.cal, 'var(--red)'], ['products', ICON.cake, 'var(--accent)'], ['settings', ICON.gear, '#8e8e93']].map(([k, icon, color]) => `
             <button class="row icon-row" data-nav="${k}"><span class="row-icon" style="background:${color}">${icon}</span><span class="rl">${esc(t(k))}</span>${ICON.chev}</button>`).join('')}
         </div></div>`;
     };
@@ -1136,6 +1234,7 @@
       else if (el.dataset.nav === 'calendar') { hap('light'); push(renderCalendar); }
       else if (el.dataset.nav === 'products') { hap('light'); push(renderProducts); }
       else if (el.dataset.nav === 'settings') { hap('light'); push(renderSettings); }
+      else if (el.dataset.nav === 'promo') { hap('light'); push(renderPromo); }
     });
     page.refresh = load;
     page.onShow = () => mainButton(null);
@@ -1193,13 +1292,17 @@
           ${o.inscription != null ? `<div class="row"><span class="rl">${esc(t('inscription'))}</span><span class="rv">${o.inscription ? '«' + esc(o.inscription) + '»' : esc(t('noInscription'))}</span></div>` : ''}
           ${o.refPhoto ? `<div class="row"><span class="rl">${esc(t('refPhoto'))}</span></div><div class="ready-photo inset"><img src="${esc(o.refPhoto)}" alt=""></div>` : ''}
           <div class="row"><span class="rl">${esc(o.method === 'pickup' ? t('pickup') : t('delivery'))}<small>${esc(o.method === 'pickup' ? loc(shop.pickup) : (o.address || t('locationAdded')))}</small></span></div>
+          ${o.gift ? `<div class="row"><span class="rl">🎁 ${esc(t('giftTo', o.gift.name))}<small>${esc(fmtPhone(o.gift.phone))}${o.gift.surprise ? ' · ' + esc(t('surprise')) : ''}${o.gift.note ? ' · «' + esc(o.gift.note) + '»' : ''}</small></span></div>` : ''}
           ${o.mapUrl ? `<button class="row icon-row" data-map="${esc(o.mapUrl)}"><span class="row-icon" style="background:var(--blue)">${ICON.pin}</span><span class="rl row-link">${esc(t('openMap'))}</span>${ICON.chev}</button>` : ''}
           ${o.courier ? `<div class="row"><span class="rl">${esc(t('courier'))}</span><span class="rv">${esc(o.courier === 'self' ? t('selfCourier') : o.courier)}</span></div>` : ''}
           ${o.method === 'delivery' ? `<div class="row"><span class="rl">${esc(t('items'))}</span><span class="rv">${money(o.item)}</span></div>
           <div class="row"><span class="rl">${esc(t('fee'))}</span><span class="rv">${o.fee ? money(o.fee) : esc(t('free'))}</span></div>` : ''}
           <div class="row total-row"><span class="rl">${esc(t('total'))}</span><span class="rv">${money(o.total)}</span></div>
           <div class="row"><span class="rl">${esc(t('payment'))}</span><span class="rv">${esc(payRow)}</span></div>
+          ${o.rating ? `<div class="row"><span class="rl">${starsHtml(o.rating)}${o.review ? `<small>«${esc(o.review)}»</small>` : ''}</span></div>` : ''}
         </div></div>
+        ${o.status === 'delivered' && o.readyPhoto ? `<div class="section"><div class="group"><div class="row"><span class="rl">${esc(t('inGallery'))}</span>${switchHtml(o.inGallery, 'data-gal="1"')}</div></div>
+          <div class="sf">${esc(t('inGalleryFoot'))}</div></div>` : ''}
         ${o.actions.includes('rej') ? `<div class="section"><button class="action-btn danger" data-action="rej">${esc(t('a_rej'))}</button></div>` : ''}`;
     };
     paint();
@@ -1215,8 +1318,13 @@
       }
     };
     page.addEventListener('click', async e => {
-      const el = e.target.closest('[data-action],[data-pay],[data-copy],[data-tg],[data-map]');
+      const el = e.target.closest('[data-action],[data-pay],[data-copy],[data-tg],[data-map],[data-gal]');
       if (!el) return;
+      if (el.dataset.gal) {
+        hap('select'); el.classList.toggle('on');
+        try { o = (await api('admin/gallery', { num: o.num, show: !o.inGallery })).order; paint(); } catch (err) { toast(errText(err.code)); }
+        return;
+      }
       if (el.dataset.copy) return copyText(el.dataset.copy);
       if (el.dataset.tg) return tg.openTelegramLink('https://t.me/' + el.dataset.tg);
       if (el.dataset.map) return tg.openLink(el.dataset.map);
@@ -1234,6 +1342,43 @@
       } catch (e) { /* next time */ }
     }, 15000);
     page.onShow = () => mainButton(null);
+  }
+
+  function renderPromo(page) {
+    let info = null, photo = null, url = null, text = '';
+    const paint = () => {
+      page.innerHTML = `
+        <h2 class="page-title">${esc(t('promoT'))}</h2>
+        <p class="page-sub">${info ? esc(t('promoTo', info.recipients)) : '…'}</p>
+        <div class="section"><div class="group">
+          <label class="row field"><textarea id="promo" rows="5" maxlength="1000" placeholder="${esc(t('promoPh'))}">${esc(text)}</textarea></label>
+          ${url ? `<div class="row"><img class="thumb" src="${url}" alt=""><button class="rl row-link" data-act="pick">${esc(t('changePhoto'))}</button><button class="x-btn" data-act="unpick">${ICON.x}</button></div>`
+                : `<button class="row icon-row" data-act="pick"><span class="row-icon" style="background:var(--orange)">${ICON.camera}</span><span class="rl row-link">${esc(t('addPhoto'))}</span></button>`}
+        </div><div class="sf">${esc(t('promoFoot'))}</div></div>
+        <div class="section"><div class="sh">${esc(t('promoPast'))}</div><div class="group">${info && info.items.length
+          ? info.items.map(b => `<div class="row"><span class="rl">${esc(b.text.slice(0, 60))}${b.text.length > 60 ? '…' : ''}<small>${esc(b.created_at)}${b.has_photo ? ' · 📷' : ''}</small></span><span class="rv">${b.sent}/${b.recipients}</span></div>`).join('')
+          : `<div class="row"><span class="rl" style="color:var(--label-2)">${esc(t('promoNone'))}</span></div>`}</div></div>`;
+      page.querySelector('#promo').addEventListener('input', e => { text = e.target.value; });
+    };
+    const load = async () => { try { info = await api('admin/broadcasts'); paint(); } catch (e) { toast(errText(e.code)); } };
+    paint(); load();
+    page.addEventListener('click', async e => {
+      const el = e.target.closest('[data-act]');
+      if (!el) return;
+      if (el.dataset.act === 'pick') {
+        const ph = await pickPhoto();
+        if (ph) { photo = ph; if (url) URL.revokeObjectURL(url); url = URL.createObjectURL(ph); paint(); }
+      } else if (el.dataset.act === 'unpick') { photo = null; url = null; paint(); }
+    });
+    page.onShow = () => mainButton(t('send'), async () => {
+      if (!text.trim()) { hap('error'); toast(t('needText')); return shake(page.querySelector('.group')); }
+      if (!(await confirmBox(t('promoQ', info ? info.recipients : 0)))) return;
+      try {
+        const r = await apiForm('admin/broadcast', { text: text.trim(), photo });
+        hap('success'); toast(t('promoSent', r.recipients));
+        text = ''; photo = null; url = null; load();
+      } catch (err) { hap('error'); toast(errText(err.code)); }
+    });
   }
 
   function renderReadyPage(page, o, done) {
@@ -1457,6 +1602,7 @@
     try {
       const d = await api('bootstrap');
       state.data = d;
+      applyBrand(d.shop.color);
       state.lang = d.lang === 'ru' ? 'ru' : 'uz';
       state.active = d.activeOrders || 0;
       document.documentElement.lang = state.lang;
