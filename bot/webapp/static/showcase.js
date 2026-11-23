@@ -27,7 +27,7 @@
     '<text x="180" y="138" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#555">Perevod / Transfer</text>' +
     '<text x="180" y="180" text-anchor="middle" font-family="sans-serif" font-size="30" font-weight="700" fill="#111">205 000 UZS</text>' +
     '<text x="180" y="218" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#888">8600 **** **** 9012</text>' +
-    '<text x="180" y="246" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#aaa">DEMO</text></svg>');
+    '</svg>');
 
   const REVIEWS = [
     { name: 'Madina', stars: 5, uz: "Juda mazali, mehmonlar hammasi retseptini so'rashdi!", ru: 'Очень вкусно, гости спрашивали рецепт!' },

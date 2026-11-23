@@ -71,7 +71,10 @@ Mini App is online at https://…/
 Bot @yourbot is running: https://t.me/yourbot | owner id … | Mini App https://…/ | Ctrl+C to stop
 ```
 
-Keep the terminal open while you demo, and stop with **Ctrl+C**. Only one copy may run at a time.
+Keep the terminal open while you demo, and stop with **Ctrl+C**.
+
+Or run it in the background, independent of any terminal: `./bot.sh start` (also `stop`,
+`restart`, `status`, `logs`). The log is kept in `data/bot.log`. Only one copy may run at a time.
 A second copy causes a "Another copy of this bot is running" error.
 
 **Browser preview:** `http://127.0.0.1:8080/?demo=1` shows the Mini App in Firefox without

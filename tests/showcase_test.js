@@ -51,14 +51,13 @@ server.listen(0, '127.0.0.1', async () => {
 
     console.log('\nCatalog');
     await until(() => top().querySelectorAll('.card').length === 11, 'catalog');
-    if (!top().querySelector('.owner-cta') || !top().querySelector('.hero .logo') || !top().querySelector('.rate-badge')) fail('logo/owner entry/ratings');
+    if (!top().querySelector('.owner-cta') || !top().querySelector('.rate-badge')) fail('owner entry/ratings');
     if (d.documentElement.style.getPropertyValue('--accent') !== '#ff2d55') fail('brand color');
-    if (top().querySelectorAll('.g-item').length < 5) fail('gallery');
-    ok('logo and brand color, 11 photo cards with ★ ratings, "Our works" gallery, owner-dashboard entry');
-    tap('.g-item');
-    await until(() => top().querySelector('.work-text'), 'gallery review');
-    await back();
-    ok('a gallery photo opens with its review');
+    if (top().querySelector('.g-item') || top().querySelector('.hero .logo')) fail('gallery strip and logo should be gone');
+    const titleRow = top().querySelector('.hero-top');
+    if (!titleRow || !titleRow.querySelector('.eyebrow') || !titleRow.querySelector('.hero-actions')) fail('header layout');
+    if (/namoyish|haqiqiy emas|demo/i.test(top().textContent + d.getElementById('toast').textContent)) fail('demo note shown');
+    ok('header: date + buttons on one row, name below; brand color; ★ ratings; no gallery, no logo, no "demo" notes');
 
     console.log('\nGift order');
     tap('[data-product="medovik"]');
@@ -95,8 +94,7 @@ server.listen(0, '127.0.0.1', async () => {
     await until(() => top().textContent.includes('Sizning bahoyingiz'), 'rated');
     ok('two minutes later: delivered with the cake photo; the visitor rates it 5 ★');
     await back(); await back();
-    await until(() => top().querySelector('.g-item'), 'home');
-    ok('their cake now leads the "Our works" gallery: ' + (top().querySelector('.g-cap span') || {}).textContent);
+    await until(() => top().querySelector('.owner-cta'), 'home');
 
     console.log('\nOwner dashboard');
     tap('.owner-cta');

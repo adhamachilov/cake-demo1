@@ -77,9 +77,7 @@
       err_phone: "Telefon raqamini to'g'ri kiriting", err_address: 'Manzilni tekshiring', err_server: "Xatolik yuz berdi. Qayta urinib ko'ring",
       err_network: 'Internet aloqasini tekshiring', err_photo_type: 'Faqat rasm yuklash mumkin',
       outsideT: 'Telegram ichida oching', outside: "Bu ilova Telegram bot ichida ishlaydi. Botga o'ting va «Katalogni ochish» tugmasini bosing.",
-      loadErr: 'Katalog yuklanmadi', retry: 'Qayta urinish', demoNote: "Brauzerda ko'rish: buyurtmalar yuborilmaydi",
-      showcaseNote: "Namoyish: buyurtmalar haqiqiy emas, qandolatxona avtomatik javob beradi",
-      showcaseDone: "Bu namoyish: buyurtmangiz holati bir necha daqiqada o'zi o'zgaradi. «Buyurtmalarim»da kuzating!",
+      loadErr: 'Katalog yuklanmadi', retry: 'Qayta urinish',
       ownerCta: "👩‍🍳 Siz qandolatchimisiz? Egasi panelini ko'ring", ownerCtaSub: "Buyurtmalar, to'lovlar, kalendar",
       works: 'Bizning ishlarimiz', ratings: '{0} ta baho', gift: "Sovg'a", giftSend: "Sovg'a sifatida yuborish",
       giftSub: "Boshqa odamga, otkritka bilan", giftName: 'Oluvchining ismi', giftPhone: 'Oluvchining telefoni',
@@ -154,9 +152,7 @@
       err_phone: 'Введите корректный номер телефона', err_address: 'Проверьте адрес', err_server: 'Что-то пошло не так. Попробуйте ещё раз',
       err_network: 'Проверьте подключение к интернету', err_photo_type: 'Можно загрузить только фото',
       outsideT: 'Откройте в Telegram', outside: 'Это приложение работает внутри Telegram-бота. Откройте бота и нажмите «Открыть каталог».',
-      loadErr: 'Каталог не загрузился', retry: 'Повторить', demoNote: 'Просмотр в браузере: заказы не отправляются',
-      showcaseNote: 'Демо: заказы не настоящие, кондитерская отвечает автоматически',
-      showcaseDone: 'Это демо: статус заказа сам изменится за пару минут. Следите в «Мои заказы»!',
+      loadErr: 'Каталог не загрузился', retry: 'Повторить',
       ownerCta: '👩‍🍳 Вы кондитер? Посмотрите панель владельца', ownerCtaSub: 'Заказы, оплаты, календарь',
       works: 'Наши работы', ratings: '{0} оценок', gift: 'Подарок', giftSend: 'Отправить как подарок',
       giftSub: 'Другому человеку, с открыткой', giftName: 'Имя получателя', giftPhone: 'Телефон получателя',
@@ -501,18 +497,17 @@
     const featured = d.products.find(p => p.featured && !p.soldOut);
     const chips = [{ id: 'all', label: t('all') }].concat(d.categories.map(c => ({ id: c.id, label: `${c.emoji} ${loc(c.name)}` })));
     page.innerHTML = `
-      <div class="hero">
-        <div>
-          ${d.shop.logo ? `<img class="logo" src="${esc(d.shop.logo)}" alt="">` : ''}
+      <div class="hero hero-home">
+        <div class="hero-top">
           <div class="eyebrow">${esc(fmtToday())}</div>
-          <h1 class="large-title">${esc(d.shop.name)}</h1>
-          ${loc(d.shop.tagline) ? `<p class="tagline">${esc(loc(d.shop.tagline))}</p>` : ''}
+          <div class="hero-actions">
+            <button class="circle-btn lang-btn" data-act="lang">${state.lang === 'uz' ? 'UZ' : 'RU'}</button>
+            ${isOwner() && !LOCAL ? `<button class="circle-btn" data-act="dash" aria-label="${esc(t('dash'))}">${ICON.chart}</button>` : ''}
+            <button class="circle-btn" data-act="orders" aria-label="${esc(t('myOrders'))}">${ICON.bag}${state.active ? `<span class="badge">${state.active}</span>` : ''}</button>
+          </div>
         </div>
-        <div class="hero-actions">
-          <button class="circle-btn lang-btn" data-act="lang">${state.lang === 'uz' ? 'UZ' : 'RU'}</button>
-          ${isOwner() ? `<button class="circle-btn" data-act="dash" aria-label="${esc(t('dash'))}">${ICON.chart}</button>` : ''}
-          <button class="circle-btn" data-act="orders" aria-label="${esc(t('myOrders'))}">${ICON.bag}${state.active ? `<span class="badge">${state.active}</span>` : ''}</button>
-        </div>
+        <h1 class="large-title">${esc(d.shop.name)}</h1>
+        ${loc(d.shop.tagline) ? `<p class="tagline">${esc(loc(d.shop.tagline))}</p>` : ''}
       </div>
       ${featured ? `
         <button class="featured${featured.photo ? '' : ' img-done'}" data-product="${esc(featured.id)}">
@@ -523,12 +518,6 @@
             <div class="featured-row"><span class="featured-price">${esc(loc(featured.price))}</span><span class="pill-light">${esc(t('order'))}</span></div>
           </div>
         </button>` : ''}
-      ${(d.gallery || []).length ? `
-        <h2 class="section-title">${esc(t('works'))}</h2>
-        <div class="gallery">${d.gallery.map((g, i) => `
-          <button class="g-item" data-g="${i}"><div class="g-ph"><img loading="lazy" src="${esc(g.photo)}" alt=""></div>
-            <div class="g-cap">${g.stars ? starsHtml(g.stars) : ''}<span>${esc(g.name)}</span></div></button>`).join('')}
-        </div>` : ''}
       ${LOCAL ? `<button class="owner-cta" data-act="dash"><span><b>${esc(t('ownerCta'))}</b><small>${esc(t('ownerCtaSub'))}</small></span>${ICON.chev}</button>` : ''}
       <div class="chips-bar"><div class="chips">
         ${chips.map(c => `<button class="chip${c.id === state.cat ? ' on' : ''}" data-cat="${esc(c.id)}">${esc(c.label)}</button>`).join('')}
@@ -974,7 +963,6 @@
           total: itemPrice() + deliveryFee(itemPrice()), item: itemPrice(), fee: deliveryFee(itemPrice()),
           deposit: 0, paid: 0, payment: 'none', photo: o.p.thumb,
         });
-        setTimeout(() => toast(t('demoNote')), 1200);
       }
       reset(page => renderDone(page, j.code));
       confetti();
@@ -1004,7 +992,7 @@
         </svg>
         <h2>${esc(t('doneTitle'))}</h2>
         <span class="code">#${esc(code)}</span>
-        <p>${esc(t(LOCAL ? 'showcaseDone' : 'doneText'))}</p>
+        <p>${esc(t('doneText'))}</p>
         <button class="tinted-btn" data-act="orders">${esc(t('myOrders'))}</button>
       </div>`;
     page.addEventListener('click', e => {
@@ -1590,7 +1578,7 @@
     return {
       initData: '', isVersionAtLeast: () => false,
       get colorScheme() { return mq.matches ? 'dark' : 'light'; },
-      ready() {}, expand() {}, close() { toast(t('demoNote')); },
+      ready() {}, expand() {}, close() {},
       onEvent(name, f) { if (name === 'themeChanged' && mq.addEventListener) mq.addEventListener('change', f); },
       MainButton: MB, BackButton: BB, HapticFeedback: null,
     };
@@ -1607,8 +1595,7 @@
       state.active = d.activeOrders || 0;
       document.documentElement.lang = state.lang;
       reset(renderHome);
-      if (DEMO) toast(t('demoNote'));
-      if (LOCAL) setTimeout(() => toast(t('showcaseNote')), 600);
+
       if (d.isOwner && PARAMS.has('admin')) {  // opened from the owner's "📊" buttons
         push(renderDash, false);
         if (PARAMS.get('order')) openAdminOrder(Number(PARAMS.get('order')));

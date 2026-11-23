@@ -513,3 +513,11 @@ body.web .page { padding-bottom: calc(100px + var(--safe-b)); }
   width: 100%; border: 0; outline: 0; resize: none; border-radius: 12px; padding: 10px 12px;
   background: var(--fill); color: var(--label); font: inherit; font-size: 16px; margin-bottom: 4px;
 }
+
+/* ------------------------------------------------------------ home header: date + buttons, then the name */
+
+.hero-home { display: block; padding: 14px 20px 8px; }
+.hero-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 38px; }
+.hero-top .hero-actions { padding-bottom: 0; flex: none; }
+.hero-home .large-title { margin-top: 6px; overflow-wrap: anywhere; }
+.hero-home .eyebrow { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
