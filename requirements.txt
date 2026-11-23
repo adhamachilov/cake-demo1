@@ -1,0 +1,6 @@
+python-telegram-bot==22.8   # widgets are called through Bot.do_api_request (this version predates them)
+aiohttp==3.13.2             # serves the Mini App from the bot process
+python-dotenv==1.2.4
+PyYAML==6.0.4
+tzdata>=2025.2              # Asia/Tashkent time zone, even on systems without tz files
+Pillow==13.0.0              # only for tools/make_placeholders.py (placeholder photos)

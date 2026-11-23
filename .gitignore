@@ -1,0 +1,17 @@
+# secrets
+.env
+
+# local data: orders database
+data/
+*.db
+*.db-wal
+*.db-shm
+
+# python
+.venv/
+__pycache__/
+*.pyc
+
+# generated static showcase (tools/build_showcase.py)
+showcase/
+showcase.zip

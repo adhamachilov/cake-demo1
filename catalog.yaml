@@ -1,0 +1,310 @@
+# =====================================================================
+#  CATALOG — the only file you edit to rebuild this bot for a new bakery
+# =====================================================================
+#
+#  To rebuild the bot for a new client:
+#    1. Change the "shop" block (name, phone, pickup address, delivery fee).
+#    2. Replace the products (names, descriptions, prices, sizes).
+#    3. Put real photos in images/ with the file names used in "photo:".
+#       Any JPG or PNG works (ideally square or 4:3, under 1 MB).
+#    4. Restart the bot. It checks this file on start and tells you
+#       exactly what is wrong if something is missing.
+#
+#  Rules:
+#    - Every text the customer sees has two languages: uz (Uzbek Latin) and ru.
+#    - Prices are whole so'm, written without spaces: 190000.
+#    - "id" values: short, lowercase latin letters, digits, _ or -.
+#      They are used inside buttons, so never reuse or rename an id
+#      while customers might still have old catalog messages open.
+# =====================================================================
+
+shop:
+  name: "Shirin Tortlar"
+  tagline:                        # under the name at the top of the Mini App
+    uz: "Uy qandolatxonasi · Toshkent"
+    ru: "Домашняя кондитерская · Ташкент"
+  order_prefix: "ST"              # order numbers look like ST-1001
+  phone: "+998 90 123 45 67"       # shown to customers when an order is rejected
+  pickup_address:
+    uz: "Toshkent, Yunusobod tumani, 4-mavze, 12-uy (Mega Planet yonida)"
+    ru: "Ташкент, Юнусабадский район, 4-квартал, дом 12 (рядом с Mega Planet)"
+  delivery_fee: 30000             # so'm, delivery anywhere in Tashkent
+  free_delivery_from: 600000      # orders from this total get free delivery (0 = never)
+  min_lead_days: 1                # earliest delivery date = today + this many days
+  booking_days: 8                 # how many dates the customer can choose from
+  payment:                        # deposit by card transfer; the customer sends a receipt screenshot
+    card_number: "8600 1234 5678 9012"   # DEMO number: put the bakery's Uzcard/Humo card here
+    card_holder: "Dilnoza K."
+    deposit_percent: 50           # % of the total paid in advance after the owner accepts (0 = all on delivery)
+  daily_capacity: 5               # max orders per delivery day (the owner can change it in the dashboard)
+  reminder_time: "18:00"          # the customer gets a reminder at this time the day before delivery
+  morning_summary_time: "08:00"   # the owner gets today's plan at this time
+  time_slots:
+    - "10:00–13:00"
+    - "13:00–16:00"
+    - "16:00–19:00"
+    - "19:00–21:00"
+  timezone: "Asia/Tashkent"
+
+# ---------------------------------------------------------------------
+#  Categories = the tabs in the catalog. "short" is the tab label used
+#  when the full name is too long for a phone screen (optional).
+# ---------------------------------------------------------------------
+categories:
+  - id: cakes
+    emoji: "🎂"
+    name: { uz: "Tortlar", ru: "Торты" }
+  - id: bento
+    emoji: "🍱"
+    name: { uz: "Bento", ru: "Бенто" }
+  - id: desserts
+    emoji: "🧁"
+    name: { uz: "Desertlar", ru: "Десерты" }
+  - id: newyear
+    emoji: "🎄"
+    name: { uz: "Yangi yil setlari", ru: "Новогодние сеты" }
+    short: { uz: "Yangi yil", ru: "Новый год" }
+
+# ---------------------------------------------------------------------
+#  Filling lists, reused by several products. "extra" is an optional
+#  surcharge in so'm added to the price.
+# ---------------------------------------------------------------------
+fillings:
+  cake:
+    - id: strawberry
+      name: { uz: "Qulupnay va qaymoq", ru: "Клубника со сливками" }
+    - id: snickers
+      name: { uz: "Snickers (karamel, yeryong'oq)", ru: "Сникерс (карамель, арахис)" }
+    - id: cherry
+      name: { uz: "Shokolad va olcha", ru: "Шоколад и вишня" }
+    - id: mango
+      name: { uz: "Mango va marakuyya", ru: "Манго и маракуйя" }
+      extra: 30000
+  bento:
+    - id: vanilla
+      name: { uz: "Vanil va qulupnay", ru: "Ваниль и клубника" }
+    - id: choco
+      name: { uz: "Shokoladli", ru: "Шоколадный" }
+    - id: snickers
+      name: { uz: "Snickers", ru: "Сникерс" }
+  cupcake:
+    - id: vanilla
+      name: { uz: "Vanilli", ru: "Ванильные" }
+    - id: choco
+      name: { uz: "Shokoladli", ru: "Шоколадные" }
+    - id: redvelvet
+      name: { uz: "Qizil baxmal", ru: "Красный бархат" }
+  trifle:
+    - id: snickers
+      name: { uz: "Snickers", ru: "Сникерс" }
+    - id: strawberry
+      name: { uz: "Qulupnayli", ru: "Клубничный" }
+    - id: oreo
+      name: { uz: "Oreo", ru: "Орео" }
+
+# ---------------------------------------------------------------------
+#  Products.
+#
+#  Pricing, pick ONE of the two styles:
+#    a) per kilogram:   price_per_kg: 190000
+#                       weights_kg: [1.5, 2, 2.5, 3]
+#    b) fixed sizes:    sizes:
+#                         - id: s10
+#                           name: { uz: "...", ru: "..." }
+#                           price: 145000
+#
+#  Optional fields:
+#    fillings: cake            # name of a list from "fillings" above
+#    inscription: true         # ask for text to write on the cake
+#    reference_photo: true     # let the customer upload a design photo
+#    lead_days: 2              # overrides shop.min_lead_days for this item
+#    featured: true            # show as the big banner at the top of the Mini App (one product)
+#    emoji / color             # the picture tile inside the catalog widget
+# ---------------------------------------------------------------------
+products:
+  - id: medovik
+    category: cakes
+    photo: images/medovik.jpg
+    emoji: "🍯"
+    color: "#f2c46d"
+    name: { uz: "Medovik", ru: "Медовик" }
+    description:
+      uz: "Asalli korjlar va smetanali krem. Klassik ta'm."
+      ru: "Медовые коржи и сметанный крем. Классика."
+    price_per_kg: 190000
+    weights_kg: [1.5, 2, 2.5, 3]
+    inscription: true
+    reference_photo: true
+
+  - id: red_velvet
+    category: cakes
+    photo: images/red_velvet.jpg
+    emoji: "❤️"
+    color: "#e0707a"
+    name: { uz: "Qizil baxmal", ru: "Красный бархат" }
+    description:
+      uz: "Nam biskvit, krem-chiz va tanlangan nachinka."
+      ru: "Влажный бисквит, крем-чиз и начинка на выбор."
+    price_per_kg: 230000
+    weights_kg: [1.5, 2, 2.5, 3]
+    fillings: cake
+    inscription: true
+    reference_photo: true
+
+  - id: choco_truffle
+    category: cakes
+    photo: images/choco_truffle.jpg
+    emoji: "🍫"
+    color: "#a8775a"
+    name: { uz: "Shokoladli trufel", ru: "Шоколадный трюфель" }
+    description:
+      uz: "Belgiya shokoladi, ganash va shokoladli biskvit."
+      ru: "Бельгийский шоколад, ганаш и шоколадный бисквит."
+    price_per_kg: 240000
+    weights_kg: [1.5, 2, 2.5, 3]
+    fillings: cake
+    inscription: true
+    reference_photo: true
+
+  - id: napoleon
+    category: cakes
+    photo: images/napoleon.jpg
+    emoji: "🥮"
+    color: "#e8c99b"
+    name: { uz: "Napoleon", ru: "Наполеон" }
+    description:
+      uz: "Qatlamli xamir va vanilli qaymoqli krem."
+      ru: "Слоёное тесто и ванильный заварной крем."
+    price_per_kg: 180000
+    weights_kg: [1.5, 2, 2.5, 3]
+    inscription: true
+    reference_photo: true
+
+  - id: bento_classic
+    category: bento
+    photo: images/bento_classic.jpg
+    emoji: "🎂"
+    color: "#f4a7c3"
+    name: { uz: "Bento «Klassik»", ru: "Бенто «Классик»" }
+    description:
+      uz: "Kichkina tort qutida. Sovg'a uchun ideal."
+      ru: "Маленький торт в коробочке. Идеально в подарок."
+    sizes:
+      - id: s10
+        name: { uz: "10 sm (~450 g, 2–3 kishi)", ru: "10 см (~450 г, 2–3 человека)" }
+        price: 145000
+      - id: s12
+        name: { uz: "12 sm (~700 g, 3–4 kishi)", ru: "12 см (~700 г, 3–4 человека)" }
+        price: 185000
+    fillings: bento
+    inscription: true
+    reference_photo: true
+
+  - id: bento_lotus
+    category: bento
+    photo: images/bento_lotus.jpg
+    emoji: "🍪"
+    color: "#d9a066"
+    name: { uz: "Bento «Lotus»", ru: "Бенто «Лотус»" }
+    description:
+      uz: "Lotus Biscoff kremi va karamel."
+      ru: "Крем Lotus Biscoff и карамель."
+    sizes:
+      - id: s10
+        name: { uz: "10 sm (~450 g, 2–3 kishi)", ru: "10 см (~450 г, 2–3 человека)" }
+        price: 165000
+      - id: s12
+        name: { uz: "12 sm (~700 g, 3–4 kishi)", ru: "12 см (~700 г, 3–4 человека)" }
+        price: 205000
+    inscription: true
+    reference_photo: true
+
+  - id: macarons
+    category: desserts
+    photo: images/macarons.jpg
+    emoji: "🌈"
+    color: "#b9a3e3"
+    name: { uz: "Makaronlar", ru: "Макаронс" }
+    description:
+      uz: "Bodom unidan, 6 xil ta'm aralash."
+      ru: "Из миндальной муки, ассорти из 6 вкусов."
+    sizes:
+      - id: x12
+        name: { uz: "12 dona", ru: "12 штук" }
+        price: 135000
+      - id: x24
+        name: { uz: "24 dona", ru: "24 штуки" }
+        price: 260000
+
+  - id: cupcakes
+    category: desserts
+    photo: images/cupcakes.jpg
+    emoji: "🧁"
+    color: "#f7b2a1"
+    name: { uz: "Kapkeyklar", ru: "Капкейки" }
+    description:
+      uz: "Kremli shapkacha bilan, bezatilgan."
+      ru: "С кремовой шапочкой и декором."
+    sizes:
+      - id: x6
+        name: { uz: "6 dona", ru: "6 штук" }
+        price: 150000
+      - id: x12
+        name: { uz: "12 dona", ru: "12 штук" }
+        price: 290000
+    fillings: cupcake
+    reference_photo: true
+
+  - id: trifles
+    category: desserts
+    photo: images/trifles.jpg
+    emoji: "🍨"
+    color: "#9fd3c7"
+    name: { uz: "Trayfllar", ru: "Трайфлы" }
+    description:
+      uz: "Stakandagi desert: biskvit, krem va meva."
+      ru: "Десерт в стаканчике: бисквит, крем и ягоды."
+    sizes:
+      - id: x4
+        name: { uz: "4 dona", ru: "4 штуки" }
+        price: 140000
+      - id: x8
+        name: { uz: "8 dona", ru: "8 штук" }
+        price: 270000
+    fillings: trifle
+
+  - id: ny_set
+    category: newyear
+    photo: images/ny_set.jpg
+    emoji: "🎅"
+    color: "#e46a6a"
+    name: { uz: "«Qorbobo» seti", ru: "Сет «Дед Мороз»" }
+    description:
+      uz: "1 kg mini-tort va 6 ta kapkeyk, sovg'a qutisida."
+      ru: "Мини-торт 1 кг и 6 капкейков в подарочной коробке."
+    sizes:
+      - id: set
+        name: { uz: "1 kg tort + 6 kapkeyk", ru: "Торт 1 кг + 6 капкейков" }
+        price: 420000
+    fillings: cake
+    inscription: true
+    lead_days: 2
+    featured: true                # the big banner at the top of the Mini App
+
+  - id: gingerbread
+    category: newyear
+    photo: images/gingerbread.jpg
+    emoji: "🎄"
+    color: "#7fbf8e"
+    name: { uz: "«Archa» pryaniklari", ru: "Пряники «Ёлочка»" }
+    description:
+      uz: "Zanjabilli pryaniklar, qo'lda bezatilgan."
+      ru: "Имбирные пряники с ручной росписью."
+    sizes:
+      - id: x12
+        name: { uz: "12 dona", ru: "12 штук" }
+        price: 180000
+      - id: x24
+        name: { uz: "24 dona", ru: "24 штуки" }
+        price: 340000
+    lead_days: 2

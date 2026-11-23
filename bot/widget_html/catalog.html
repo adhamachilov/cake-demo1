@@ -1,0 +1,53 @@
+<style>
+body{margin:0;padding:10px 12px 12px}
+h3{margin:0;font-size:17px}
+.h{color:var(--tg-theme-hint-color);font-size:13px;margin:2px 0 10px}
+#t{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+#t button,#pg button{margin:0;height:auto;min-height:0;font-size:13px}
+#t button{padding:6px 10px;border-radius:16px;background:var(--tg-theme-secondary-bg-color);color:var(--tg-theme-text-color)}
+#t button.on{background:var(--tg-theme-button-color);color:var(--tg-theme-button-text-color)}
+#g{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.c{border-radius:12px;overflow:hidden;background:var(--tg-theme-secondary-bg-color);transition:transform .15s}
+.c:active{transform:scale(.97)}
+.c.w{box-shadow:0 0 0 2px var(--tg-theme-button-color)}
+.i{height:74px;display:flex;align-items:center;justify-content:center;font-size:38px}
+.b{padding:7px 9px 9px}
+.n{font-weight:600;font-size:14px;line-height:1.25}
+.d{color:var(--tg-theme-hint-color);font-size:12px;line-height:1.3;margin:3px 0 5px}
+.p{font-weight:600;font-size:13px;color:var(--tg-theme-accent-text-color)}
+#pg{display:flex;justify-content:center;align-items:center;gap:14px;margin-top:8px;font-size:13px;color:var(--tg-theme-hint-color)}
+#pg button{padding:4px 14px}
+#m{min-height:17px;margin-top:8px;font-size:13px;text-align:center;color:var(--tg-theme-hint-color)}
+</style>
+<h3>__TITLE__</h3><div class="h">__SUB__</div>
+<div id="t"></div><div id="g"></div><div id="pg"></div><div id="m"></div>
+<script>
+const W=window.TelegramWidget,C=__C__,P=__P__,T=__T__,N=4,$=i=>document.getElementById(i);
+let c=0,pg=0,sel=null;
+try{c=+localStorage.getItem('c')||0}catch(e){}
+if(!(c<C.length))c=0;
+function mk(t,k,x){const e=document.createElement(t);if(k)e.className=k;if(x!=null)e.textContent=x;return e}
+function msg(s){$('m').textContent=s||''}
+function draw(){
+$('t').replaceChildren(...C.map((n,i)=>{const b=mk('button',i==c?'on':'',n);b.onclick=()=>{c=i;pg=0;try{localStorage.setItem('c',i)}catch(e){}draw()};return b}));
+const L=P.filter(p=>p[0]==c),M=Math.ceil(L.length/N)||1;
+if(pg>=M)pg=0;
+$('g').replaceChildren(...L.slice(pg*N,pg*N+N).map(p=>{
+const e=mk('div','c'+(sel==p[1]?' w':'')),i=mk('div','i',p[2]),b=mk('div','b');
+i.style.background='linear-gradient(135deg,rgba(255,255,255,.55),rgba(255,255,255,0)),'+p[3];
+b.append(mk('div','n',p[4]),mk('div','d',p[5]),mk('div','p',p[6]));
+e.append(i,b);e.onclick=()=>go(p);return e}));
+const g=$('pg');g.replaceChildren();
+if(M>1){const a=mk('button','','‹'),z=mk('button','','›');a.disabled=pg==0;z.disabled=pg==M-1;a.onclick=()=>{pg--;draw()};z.onclick=()=>{pg++;draw()};g.append(a,mk('span','',pg+1+'/'+M),z)}
+}
+function go(p){
+if(!W||W.isPreview||W.isForward){msg(T.NOT_ALLOWED);return}
+let r;
+try{r=W.request('p:'+p[1])}catch(x){msg(T.err);return}
+sel=p[1];draw();msg(T.sending);
+r.then(a=>{msg(a.result=='ok'?T.ok:T.gone);try{W.HapticFeedback.notificationOccurred('success')}catch(x){}},x=>{sel=null;draw();msg(T[x.code]||T.err)});
+}
+draw();
+let h=0;try{h=sessionStorage.getItem('h')}catch(e){}
+if(W){W.ready();if(!h&&!W.isPreview&&!W.isForward)try{W.request('hi').then(()=>{try{sessionStorage.setItem('h',1)}catch(e){}},()=>{})}catch(e){}}
+</script>

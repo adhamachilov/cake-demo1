@@ -1,0 +1,43 @@
+<style>
+body{margin:0;padding:10px 12px 12px}
+.top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.n{font-weight:700;font-size:16px}
+.x{color:var(--tg-theme-hint-color);font-size:13px;margin:2px 0 12px}
+.top .x{margin:0;white-space:nowrap}
+.s{display:flex;gap:10px;position:relative;padding-bottom:14px}
+.s:last-child{padding-bottom:0}
+.s:not(:last-child)::before{content:'';position:absolute;left:9px;top:22px;bottom:2px;width:2px;border-radius:1px;background:var(--tg-theme-section-separator-color)}
+.s.d:not(:last-child)::before{background:var(--tg-theme-button-color)}
+.o{width:20px;height:20px;border-radius:50%;flex:none;box-sizing:border-box;border:2px solid var(--tg-theme-section-separator-color);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--tg-theme-button-text-color)}
+.d .o{background:var(--tg-theme-button-color);border-color:var(--tg-theme-button-color)}
+.cur .o{border-color:var(--tg-theme-button-color);animation:p 1.6s ease-in-out infinite}
+@keyframes p{50%{transform:scale(1.2)}}
+@media (prefers-reduced-motion:reduce){.cur .o{animation:none}}
+.l{flex:1;font-size:14px;line-height:20px}
+.cur .l{font-weight:600}
+.t{color:var(--tg-theme-hint-color);font-size:12px;line-height:20px}
+.r{color:var(--tg-theme-destructive-text-color);font-weight:600;font-size:15px}
+.f{color:var(--tg-theme-hint-color);font-size:13px;margin-top:6px}
+</style>
+<div id="r"></div>
+<script>
+const W=window.TelegramWidget,T=__T__,K=['new','accepted','ready','delivered'];
+function mk(t,k,x){const e=document.createElement(t);if(k)e.className=k;if(x!=null)e.textContent=x;return e}
+function draw(){
+let d=null;try{d=JSON.parse(W&&W.chatData)}catch(e){}
+const r=document.getElementById('r');
+if(!d){r.replaceChildren(mk('div','x','…'));return}
+const h=d.t||{},top=mk('div','top');
+top.append(mk('div','n',T.order+' #'+d.n),mk('div','x',d.p||''));
+r.replaceChildren(top,mk('div','x',d.i+' · '+d.w));
+if(d.s=='rejected'){r.append(mk('div','r','✕ '+T.rejected+(h.rejected?' · '+h.rejected:'')),mk('div','f',T.note));return}
+const k=K.indexOf(d.s);
+K.forEach((s,i)=>{
+const e=mk('div','s'+(i<=k?' d':'')+(i==k+1?' cur':''));
+e.append(mk('div','o',i<=k?'✓':''),mk('div','l',s=='delivered'?(d.m=='p'?T.done_p:T.done_d):T[s]),mk('div','t',h[s]||''));
+r.append(e)});
+}
+if(W)W.onEvent('chatDataChanged',draw);
+draw();
+if(W)W.ready();
+</script>

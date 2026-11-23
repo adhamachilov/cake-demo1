@@ -1,0 +1,7 @@
+# Netlify builds the static showcase from this repo on every push (README, "Showcase").
+[build]
+  command = "pip install -q PyYAML==6.0.4 Pillow==13.0.0 python-dotenv==1.2.4 && python tools/build_showcase.py"
+  publish = "showcase"
+
+[build.environment]
+  PYTHON_VERSION = "3.12"
